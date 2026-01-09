@@ -1,0 +1,279 @@
+\documentclass[a4paper]{article}
+\usepackage{graphicx}
+\usepackage{amssymb}
+
+\begin{document}
+
+\title{STAT3006 Notes}
+\author{TNTprizz80315}
+\date{06/01/2026}
+\maketitle
+
+\setlength{\parindent}{0pt}
+
+\section{Foreward}
+
+\textit{
+Hello. Despite the fact that you are not interested in me as a human at all, I am still going to introduce myself.  
+    I am TNTprizz80315, and I am making this notes because I hate myself.
+}
+
+\textit{This piece of note exists as I am trying to figure out what the course is talkng about thanks to Prof.\ W**'s video playing during the lecture.}
+
+\textit{I would try not to use complex wordings or a bunch of Mathematical notations (like $ \Vvdash, \succnapprox, \gnapprox  $) for readability.}
+
+\textit{Anyways, (sarcastic) enjoy this course and (sarcastic) get a good grade by attending the lecture.}
+
+\section{Outline and Syllabus}
+
+\begin{itemize}
+    \item Grading Policy:
+    \begin{itemize}
+        \item 50\% 4 Assignments
+        \item 50\% Final Exam (No Midterm)
+    \end{itemize}
+    \item Textbooks:
+    \begin{itemize}
+        \item Computational Statistics, Geof H. Givens and Jennifer A. Hoeting
+        \item Numerical Analysis for Statisticians, Kenneth Lange
+        \item Monte Carlo Statistical Methods, Christian Robert and
+        
+        George Casella
+    \end{itemize}
+    \item Tutorial:
+    \begin{itemize}
+        \item TBA
+    \end{itemize}
+\end{itemize}
+
+\textit{Before everything start, I'd like to give you a suggestion: Drop the course if possible. 
+I'm here simply because I can't graduate if I don't do so. You know what I mean if you attend a lecture.}
+
+\break{}
+
+\section{Introduction}
+
+\subsection{Why are we learning statistics?}
+
+\textit{(Really? After studying STAT2001 STAT3008 STAT2006???)}
+
+\begin{itemize}
+    \item Get accurate results
+    \item efficiently (with a relatively small samples)
+    \item and come up with conclusions for prediction.
+\end{itemize}
+
+Samples $\rightarrow$ Statistical Interpretation $\rightarrow$ conclusions
+
+\subsection{Example Declaration}
+
+We are using this later on, so just try to memorize this.  
+
+\indent
+
+Let's say we are trying to analyze the height of people in a certain region. A typical solution is to collect all people's height, and process the data to get the mean or variance etc.  
+
+However, this is not cool at all, as you need massive computation power to process the thing, not to mention the workload of data collecting.
+
+So, we will just take certain samples (conducting surveys on certain people etc.) and hope that it can help us explain something about the height of them.
+
+We assume that $X \stackrel{}{\sim} N(\mu, 1)$
+
+\indent
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{src/DataVsSample.png}
+    \caption{The relationship between all data and samples}\label{fig:DVS}
+\end{figure}
+
+As we see in Figure~\ref{fig:DVS}, We are doing sampling (survey, etc.) to obtain samples $\overrightarrow{x}: x_1, x_2,\ldots, x_n$ from the target. The samples are Independent and Identically Distributed, and we are going to use stratified computing to get a result.
+
+Also, the samples can tell something about the entire data, like guessing the mean $(\mu)$ and the variance $(\sigma^2)$. We can do this by the \textbf{Method of Moments} and \textbf{Maximum Likelihood Estimator (MLE)}.
+
+\indent
+
+We are focusing on the latter part as sample collecting is introduced in another course.
+
+\break{}
+
+\subsection{Two Schools of Statistics}
+
+\subsubsection{Frequencies}
+
+In this theorey, we assume that the statistics have:
+\begin{itemize}
+    \item Fixed parameters, and
+    \item Random samples/data
+\end{itemize}
+
+Referring to the example above, we use MLE to come up with a guess on the parameter of a model.\ i.e.\ our goal is to obtain $\hat{\mu}$ or $\hat{\sigma^2}$.
+
+To do this, we find $\hat{\mu}$ in which $L(\mu| \overrightarrow{x})$ or $l(\mu| \overrightarrow{x})$ is the maximum, such that
+
+\begin{equation}
+    P(\mu| x) = \frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{{(\mu - x)}^2}{2\sigma^2}) = \frac{1}{\sqrt{2\pi}}\exp(-\frac{{(\mu - x)}^2}{2})
+\end{equation}
+
+\begin{equation}
+    L(\mu| \overrightarrow{x}) = \prod_{i = 1}^n P(\mu| x_i)  
+\end{equation}
+
+\begin{equation}
+    l(\mu| \overrightarrow{x}) = \ln(\prod_{i = 1}^n P(\mu| x_i)) = \sum_{i = 1}^{n} \ln(P(\mu| x_i)) = -\frac{1}{2}\ln(2\pi)-\frac{\sum_{i=1}^{n}{(\mu - x_i)}^2}{2}
+\end{equation}
+
+\indent
+Both of them works as maximizing $L(\mu| \overrightarrow{x})$ implies maximizing $l(\mu| \overrightarrow{x})$ and vice versa.
+
+\indent
+
+To do so, we can do the following:
+
+\[\frac{d l(\mu| \overrightarrow{x})}{d \mu} \vert_{\hat{\mu}} = 0\]
+\[\frac{d l(\mu| \overrightarrow{x})}{d \mu} \vert_{\hat{\mu}} = \frac{2\sum_{i=1}^{n}(\hat{\mu} - x_i)}{2} = 0\]
+\[n\hat{\mu} = n\bar{x} \rightarrow \hat{\mu} = \bar{x}\]
+
+Nice and neat, right? However, the \textbf{Optimization problem} arises. $\hat{\mu}$'s accuracy increases when the number of samples increases. Thats why we are learning how to get accurate $\hat{\mu}$ using least samples/highest efficiency.
+
+\subsubsection{Bayesian}
+
+In this theorey, we assume that the statistics
+\begin{itemize}
+    \item has random parameters and samples/data
+    \item can have prior beliefs about parameters (Guess the parameters as well)
+\end{itemize}
+
+We introduce $\pi(\mu)$ into the model to estimate $\mu$ as well so that it is updated after observing the data.
+
+\indent
+
+Bayes' theorem:
+\begin{equation}
+    P(A|B) = \frac{P(A, B)}{P(B)} = \frac{P(A)P(B|A)}{P(B)}
+\end{equation}
+
+Then, we get:
+
+\[P(\mu|\overrightarrow{x}) = \frac{P(\mu,\overrightarrow{x})}{P(\overrightarrow{x})} = \frac{\pi(\mu)P(\overrightarrow{x}|\mu)}{\int\pi(\tau)P(\overrightarrow{x}|\tau)\,d\tau} = c\cdot\pi(\mu)P(\mu|\overrightarrow{x}) \propto \pi(\mu)P(\overrightarrow{x}|\mu)\]
+
+Now, we get two things:
+
+\begin{itemize}
+    \item $\overrightarrow{x} \stackrel{i.i.d}{\sim} N(\mu, 1)$ \textit{(Note that $\mu$ is unknown, and is the target of inference.)}
+    \item $\pi(\mu) \sim N(a, b^2)$, where $b^2$ is very large
+\end{itemize}
+
+Our goal is to get the distribution of $\mu$ instead of $\pi(\mu)$, so:
+
+\indent
+
+Given that if $f(x) = c_0 m(x)$ and $h(x) = d_0 m(x)$ are density functions,
+\begin{equation}
+c_0 = d_0, f(x) = h(x)
+\end{equation}
+
+Proof: even monkey knows that if $f(x)$ is a density function, $\int_{-\infty}^{+\infty} f(x) \,dx = 1$.
+
+Then, $\int_{-\infty}^{+\infty} c_0 m(x) \,dx = \int_{-\infty}^{+\infty} d_0 m(x) \,dx = 1 \rightarrow c_0 = d_0 \rightarrow f(x) = h(x) \rightarrow \square$
+
+
+\[P(\mu|\overrightarrow{x}) \propto \pi(\mu)P(\overrightarrow{x}|\mu) \propto \frac{1}{\sqrt{2\pi}b}\exp(-\frac{{(\mu - a)}^2}{2b^2}) \cdot \prod_{i = 1}^{n}\frac{1}{\sqrt{2\pi}}\exp(-\frac{{(x_i - \mu)}^2}{2})\]
+\[\propto \exp(-\frac{{(\mu - a)}^2}{2b^2} - \frac{\sum_{i = 1}^{n}{(x_i - \mu)}^2}{2})\]
+\[\propto \exp(-\frac{1}{2}(\frac{\mu^2 - 2\mu a + a^2}{b^2} - \sum_{i=1}^{n}x_i^2 - 2n\mu \bar{x} + n\mu^2))\]
+\[\propto \exp(-\frac{1}{2}(\mu^2(\frac{1}{b^2} + n) - 2\mu(\frac{a}{b^2} + n\bar{x})))\]
+\begin{equation}
+\propto \exp(-\frac{{(\mu - \frac{\frac{a}{b^2} + n \bar{x}}{\frac{1}{b^2} + n})}^2}{2\cdot\frac{1}{\frac{1}{b^2}+n}})
+\end{equation}
+
+We surprisingly found that
+\begin{equation}
+\mu|\overrightarrow{x} \sim N(\frac{\frac{a}{b^2} + n \bar{x}}{\frac{1}{b^2} + n}, \frac{1}{\frac{1}{b^2}+n})
+\end{equation}
+
+Then, the posterior mean $E(\mu|\overrightarrow{x})$:
+\[= \frac{\frac{a}{b^2} + n \bar{x}}{\frac{1}{b^2} + n} = \frac{\frac{a}{n\cdot b^2} +\bar{x}}{\frac{1}{n\cdot b^2} + 1} \stackrel{n \rightarrow +\infty}{\longrightarrow}\bar{x}\]
+
+the posterior variance $Var(\mu|\overrightarrow{x})$:
+\[= \frac{1}{\frac{1}{b^2}+n} \lessapprox \frac{1}{n} = Var(\bar{x}) = \frac{Var(x_i)}{n} = \frac{1}{n}\]
+
+\indent
+
+In general, direct maximization of $P(\mu|\overrightarrow{x})$ is difficult, so we approximate 
+
+$P(\mu|\overrightarrow{x})$ by sampling, which is something like $\overrightarrow{\mu}: \mu_1. \mu_2, \ldots, \mu_m$.
+
+The probelm now becomes: How do we sample from a target distribution? (i.e. What the hell is $\overrightarrow{\mu}$???)
+
+\subsection{Grouped Data Analysis}
+
+There might exist different distributions for different groups of population. For instance, male's average height is \textit{generally} higher than female's.
+
+In this case, we divide the population into two groups: Female and male.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{src/HightDistribn.png}
+    \caption{Visible relationship between the height of female and male}\label{fig:HD}
+\end{figure}
+
+What we are finding now is $P(x | \mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p)$, where $p$ stands for the probability of data $x_i$ is from a female.
+
+\indent
+
+Obviously:
+
+\[P(x | \mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p) = p \cdot P(x| p = 1) + (1-p) \cdot P(x|p=0)\]
+\[=p \cdot \frac{1}{\sqrt{2\pi}\sigma_1}\exp(-\frac{{(x - \mu_1)}^2}{2\sigma_1^2}) + (1-p) \cdot \frac{1}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x - \mu_2)}^2}{2\sigma_2^2})\]
+
+Consider $l(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p | \overrightarrow{x})$ (We don't do $L(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p | \overrightarrow{x})$ as it is too difficult to do.): 
+
+\[\sum_{i = 1}^{n} \ln(p \cdot \frac{1}{\sqrt{2\pi}\sigma_1}\exp(-\frac{{(x - \mu_1)}^2}{2\sigma_1^2}) + (1-p) \cdot \frac{1}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x - \mu_2)}^2}{2\sigma_2^2}))\]
+
+Then we find:
+
+\[\frac{dl}{d \mu_1} \vert_{\hat{\mu}} = 0, \frac{dl}{d \mu_2} \vert_{\hat{\mu}} = 0, \frac{dl}{d \sigma_1^2} \vert_{\hat{\mu}} = 0, \frac{dl}{d \sigma_2^2} \vert_{\hat{\mu}} = 0, \frac{dl}{dp} \vert_{\hat{\mu}} = 0\]
+
+\textit{Don't do this, as you can see how complex it would be when you actually do the differentiation.}
+
+\indent
+
+To deal with this, we introduce $\overrightarrow{z}: z_1, z_2, \ldots , z_n$ where
+
+\[
+\left\{ 
+\begin{array}{lr}
+z_i = 1&(female) \\
+z_i = 0&(male)
+\end{array}
+\right.
+\]
+
+Then, $P(x_i, z_i | \mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p) =$
+
+\[{(\frac{p}{\sqrt{2\pi}\sigma_1} \exp(-\frac{{(x_i - \mu_1)}^2}{2\sigma_1^2}))}^{z_i} \cdot {(\frac{1-p}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x_i - \mu_2)}^2}{2\sigma_2^2}))}^{1 - z_i}\]
+
+Now, we can get a proper $l(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p | \overrightarrow{x}, \overrightarrow{z})$ By
+
+\[\ln(\prod^{n}_{i = 1}({(\frac{p}{\sqrt{2\pi}\sigma_1} \exp(-\frac{{(x_i - \mu_1)}^2}{2\sigma_1^2}))}^{z_i} \cdot {(\frac{1-p}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x_i - \mu_2)}^2}{2\sigma_2^2}))}^{1 - z_i}))\]
+\[= \sum_{i = 1}^{n}( z_i\cdot(\ln(p) - \frac{1}{2}\ln(2\pi\sigma_1^2) - \frac{{(x_i - \mu_1)}^2}{2\sigma_1^2}) + \]
+\[(1-z_i)\cdot(\ln(1 - p) - \frac{1}{2}\ln(2\pi\sigma_2^2) - \frac{{(x_i - \mu_2)}^2}{2\sigma_2^2}) )\]
+
+Now, we get $\hat{p}$ and $\hat{\mu}$ by:
+
+\[\frac{dl}{dp} \vert_{\hat{\mu}} = \sum_{i = 1}^{n} (\frac{z_i}{p} - \frac{1-z_i}{1-p}) = 0 \Rightarrow \hat{p} = \bar{z}\]
+
+\[\frac{dl}{d\mu_1} \vert_{\hat{\mu}} = \sum_{i=1}^{n}(\frac{z_i \cdot 2 \cdot (x_i - \hat{\mu})}{2\sigma_1^2}) = 0 \Rightarrow \hat{\mu} = \frac{\sum_{i = 1}^{n}z_i \cdot x_i}{n\cdot\bar{z}}\]
+
+We can obviously see that $\hat{p}$ is the proportion of females in the samples, while $\hat{\mu}$ is the average height of female.
+
+\indent
+
+This will only work if we know what $\overrightarrow{z}$ is, but we know nothing about this!
+
+In this case, we guess what $\overrightarrow{z}$ is from $\overrightarrow{x}$.
+\textit{We are going to talk about this later in this course (maybe).}
+
+
+
+\end{document}
