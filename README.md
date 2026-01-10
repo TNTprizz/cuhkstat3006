@@ -1,4 +1,4 @@
-# CUHK STAT3008 Notes
+# CUHK STAT3006 Notes
 I generously made the sources below as it's an ***absolute torture*** for me to follow the filmed lectures thanks to Prof. W**, and I love torturing myself. 
 
 > 教授有著math ug, cs stat pg既學歷，學富五車，用心教學  
