@@ -274,6 +274,83 @@ This will only work if we know what $\overrightarrow{z}$ is, but we know nothing
 In this case, we guess what $\overrightarrow{z}$ is from $\overrightarrow{x}$.
 \textit{We are going to talk about this later in this course (maybe).}
 
+\break{}
 
+\section{Solution to Non-linear Equations}
+
+\subsection{Bisection Method}
+
+We declare a function $g(x)$ as an example, and we are trying to find $x$ when $g(x) = 0$.
+
+$g(x)$ has the following properties:
+
+\begin{itemize}
+    \item $g(x) \in C[a, b]$ ($g(x)$ is continuous between $a$ and $b$)
+    \item $g(a) \cdot g(b) < 0$ ($g(a)$ and $g(b)$ are opposite in sign (one +ve, one -ve))
+\end{itemize}
+
+\paragraph{Intermediate Value Theorem}
+
+\indent
+
+Consider a continuous function $f: [a, b] \in \mathbb{R} \rightarrow \mathbb{R}$, if there exists a $u$ such that $f(a) < u < f(b)$ or $f(a) > u > f(b)$, then there must exist a $c \in [a, b]$ such that $f(c) = u$.
+
+\indent
+
+To find $c$ such that $g(c) = 0$ such that $c \in [a, b]$, we may cut the interval in half and find which part $c$ is in. We repeat this process until $c$'s accuracy is high enough.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{src/IVTDemo.png}
+    \caption{An example of how to find $x$ when $g(x) = 0$}\label{fig:IVT}
+\end{figure}
+
+If $g(a) \cdot g(b) < 0$, $c \in [a, b]$. We can make use of this property to let our computer do the job for us.
+
+\break{}
+
+The program: \textit{(Lecturer used pseudo code to do the thing btw)}
+
+\begin{verbatim}
+    fn g(x: i32) {3 * x^2 - 5}
+    fn ivt(Maxit: i32, a: &mut i32, b: &mut i32, ts: f32) {
+        let mut c: i32 = (a + b) / 2;
+        for i in 1..=Maxit {
+            if g(c) == 0 || (b - a) / 2 < ts {break;}
+            if g(c) * g(a) > 0 {a = c;} else {b = c;} 
+        }
+        c
+    }
+\end{verbatim}
+
+\paragraph{Example: Finding the shortest C.I.}
+
+\indent
+
+Let's say we have a function, and we want the shortest interval $[a, b]$ so that $\int_{b}^{a} f(x) \,dx = \alpha_0 = 0.95$ while $f(b) = f(a) = \lambda_{0.95}$.
+
+Seems complicated, but in a nutshell:
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{src/CIEx.png}
+    \caption{The nutshell}\label{fig:CIEx}
+\end{figure}
+
+We divide the problem into two parts:
+
+\paragraph{1. How do we find $a$ and $b$ given $\lambda$?}
+\indent
+Bisection method. Stated above.
+
+\paragraph{2. How do we find the most suited $\lambda_{0.95}$?}
+\indent
+Trial-and-error.
+
+If the initial $\lambda_{0.95}$ doesn't suit, try to declare $\lambda_{lower}$ or $\lambda_{higher}$ which covers the correct $\lambda_{0.95}$. Apply the bisection method to get the number.
+
+\indent
+
+Now, we can get the required interval using computers efficiently.
 
 \end{document}
