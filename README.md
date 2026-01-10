@@ -12,10 +12,11 @@ I am going to learn LaTeX in the same time so something weird might happen to th
 
 
 # To-Do List
-[*] Create the entire LaTeX environment  
-[*] Start the entire thing  
-[ ] Introduction and the first lecture  
-[ ] Deal with the fancy sampling
+ - [x] Create the entire LaTeX environment  
+ - [x] Start the entire thing  
+ - [x] Introduction and the first lecture  
+ - [ ] Second lecture  
+ - [ ] Deal with the fancy theme
 
 # LICENSE
-Follows [GPL-3.0](/LICENSE)
+Follows [GPL-3.0](/LICENSE).
