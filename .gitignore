@@ -5,3 +5,8 @@ main.log
 main.synctex.gz
 
 src/.DS_Store
+example_programs/.DS_Store
+example_programs/.git
+example_programs/src
+example_programs/target
+example_programs/Cargo*

@@ -1,6 +1,7 @@
 \documentclass[a4paper]{article}
 \usepackage{graphicx}
 \usepackage{amssymb}
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue]{hyperref}
 
 \begin{document}
 
@@ -309,18 +310,20 @@ If $g(a) \cdot g(b) < 0$, $c \in [a, b]$. We can make use of this property to le
 
 \break{}
 
-The program: \textit{(Lecturer used pseudo code to do the thing btw)}
+The program: Refer to \href{https://github.com/tntprizz/cuhkstat3006/example_programs/ivt.rs}{here} for an executable file.
 
 \begin{verbatim}
-    fn g(x: i32) {3 * x^2 - 5}
-    fn ivt(Maxit: i32, a: &mut i32, b: &mut i32, ts: f32) {
-        let mut c: i32 = (a + b) / 2;
-        for i in 1..=Maxit {
-            if g(c) == 0 || (b - a) / 2 < ts {break;}
-            if g(c) * g(a) > 0 {a = c;} else {b = c;} 
-        }
-        c
+fn g(x: f32) -> f32 {3.0 * x.powf(2.0) - 5.0}
+
+fn ivt(maxit: u32, mut a: f32, mut b: f32, ts: f32) -> f32 {
+    let mut c: f32 = (a + b) / 2.0;
+    for _ in 1..=maxit {
+        if g(c) == 0.0 || (((b - a) / 2.0)) < ts {break;}
+        if g(c)*g(a) > 0.0 {a=c;} else {b=c}
+        c = (a + b) / 2.0;
     }
+    c
+}
 \end{verbatim}
 
 \paragraph{Example: Finding the shortest C.I.}
@@ -352,5 +355,7 @@ If the initial $\lambda_{0.95}$ doesn't suit, try to declare $\lambda_{lower}$ o
 \indent
 
 Now, we can get the required interval using computers efficiently.
+
+Refer to \href{https://github.com/tntprizz/cuhkstat3006/example_programs/FindCI.rs}{here} for an example program.
 
 \end{document}
