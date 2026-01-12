@@ -1,3 +1,9 @@
+/*
+[dependencies]
+statrs = "0.16" # Use the latest version
+rand = "0.8"    # Needed for sampling
+*/
+
 use statrs::distribution::{ContinuousCDF, Normal};
 
 fn areadist(a: f64, b: f64, alpha: f64, distribn: &Normal) -> f64 {
