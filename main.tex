@@ -2,8 +2,15 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue]{hyperref}
+\usepackage{amsmath}
+
 
 \begin{document}
+
+% I can't believe chktex doesn't allow easy half-closed interval.
+
+% chktex-file 9
+% chktex-file 17
 
 \title{STAT3006 Notes}
 \author{TNTprizz80315}
@@ -111,18 +118,11 @@ In this theorey, we assume that the statistics have:
 Referring to the example above, we use MLE to come up with a guess on the parameter of a model.\ i.e.\ our goal is to obtain $\hat{\mu}$ or $\hat{\sigma^2}$.
 
 To do this, we find $\hat{\mu}$ in which $L(\mu| \overrightarrow{x})$ or $l(\mu| \overrightarrow{x})$ is the maximum, such that
-
-\begin{equation}
-    P(\mu| x) = \frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{{(\mu - x)}^2}{2\sigma^2}) = \frac{1}{\sqrt{2\pi}}\exp(-\frac{{(\mu - x)}^2}{2})
-\end{equation}
-
-\begin{equation}
-    L(\mu| \overrightarrow{x}) = \prod_{i = 1}^n P(\mu| x_i)  
-\end{equation}
-
-\begin{equation}
-    l(\mu| \overrightarrow{x}) = \ln(\prod_{i = 1}^n P(\mu| x_i)) = \sum_{i = 1}^{n} \ln(P(\mu| x_i)) = -\frac{1}{2}\ln(2\pi)-\frac{\sum_{i=1}^{n}{(\mu - x_i)}^2}{2}
-\end{equation}
+\begin{flalign*}
+    P(\mu| x) &= \frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{{(\mu - x)}^2}{2\sigma^2}) = \frac{1}{\sqrt{2\pi}}\exp(-\frac{{(\mu - x)}^2}{2}) &\\
+    L(\mu| \overrightarrow{x}) &= \prod_{i = 1}^n P(\mu| x_i)  &\\
+    l(\mu| \overrightarrow{x}) &= \ln(\prod_{i = 1}^n P(\mu| x_i)) = \sum_{i = 1}^{n} \ln(P(\mu| x_i)) = -\frac{1}{2}\ln(2\pi)-\frac{\sum_{i=1}^{n}{(\mu - x_i)}^2}{2} &\\
+\end{flalign*}
 
 \indent
 Both of them works as maximizing $L(\mu| \overrightarrow{x})$ implies maximizing $l(\mu| \overrightarrow{x})$ and vice versa.
@@ -130,11 +130,11 @@ Both of them works as maximizing $L(\mu| \overrightarrow{x})$ implies maximizing
 \indent
 
 To do so, we can do the following:
-
-\[\frac{d l(\mu| \overrightarrow{x})}{d \mu} \vert_{\hat{\mu}} = 0\]
-\[\frac{d l(\mu| \overrightarrow{x})}{d \mu} \vert_{\hat{\mu}} = \frac{2\sum_{i=1}^{n}(\hat{\mu} - x_i)}{2} = 0\]
-\[n\hat{\mu} = n\bar{x} \rightarrow \hat{\mu} = \bar{x}\]
-
+\begin{flalign*}
+    \frac{d l(\mu| \overrightarrow{x})}{d \mu} \vert_{\hat{\mu}} &= 0 &\\
+    \frac{d l(\mu| \overrightarrow{x})}{d \mu} \vert_{\hat{\mu}} &= \frac{2\sum_{i=1}^{n}(\hat{\mu} - x_i)}{2} = 0 &\\
+    n\hat{\mu} &= n\bar{x} \rightarrow \hat{\mu} = \bar{x} &
+\end{flalign*}
 Nice and neat, right? However, the \textbf{Optimization problem} arises. $\hat{\mu}$'s accuracy increases when the number of samples increases. Thats why we are learning how to get accurate $\hat{\mu}$ using least samples/highest efficiency.
 
 \subsubsection{Bayesian}
@@ -150,13 +150,14 @@ We introduce $\pi(\mu)$ into the model to estimate $\mu$ as well so that it is u
 \indent
 
 Bayes' theorem:
-\begin{equation}
+\begin{equation} \label{eq:bayesian}
     P(A|B) = \frac{P(A, B)}{P(B)} = \frac{P(A)P(B|A)}{P(B)}
 \end{equation}
 
-Then, we get:
-
-\[P(\mu|\overrightarrow{x}) = \frac{P(\mu,\overrightarrow{x})}{P(\overrightarrow{x})} = \frac{\pi(\mu)P(\overrightarrow{x}|\mu)}{\int\pi(\tau)P(\overrightarrow{x}|\tau)\,d\tau} = c\cdot\pi(\mu)P(\mu|\overrightarrow{x}) \propto \pi(\mu)P(\overrightarrow{x}|\mu)\]
+Then, we get the following by pluging in (\ref{eq:bayesian}):
+\begin{flalign*}
+    P(\mu|\overrightarrow{x}) &= \frac{P(\mu,\overrightarrow{x})}{P(\overrightarrow{x})} = \frac{\pi(\mu)P(\overrightarrow{x}|\mu)}{\int\pi(\tau)P(\overrightarrow{x}|\tau)\,d\tau} = c\cdot\pi(\mu)P(\mu|\overrightarrow{x}) \propto \pi(\mu)P(\overrightarrow{x}|\mu) &
+\end{flalign*}
 
 Now, we get two things:
 
@@ -170,34 +171,37 @@ Our goal is to get the distribution of $\mu$ instead of $\pi(\mu)$, so:
 \indent
 
 Given that if $f(x) = c_0 m(x)$ and $h(x) = d_0 m(x)$ are density functions,
-\begin{equation}
-c_0 = d_0, f(x) = h(x)
-\end{equation}
+\begin{flalign*}
+    c_0 &= d_0, f(x) = h(x) &
+\end{flalign*}
 
 Proof: even monkey knows that if $f(x)$ is a density function, $\int_{-\infty}^{+\infty} f(x) \,dx = 1$.
 
 Then, $\int_{-\infty}^{+\infty} c_0 m(x) \,dx = \int_{-\infty}^{+\infty} d_0 m(x) \,dx = 1 \rightarrow c_0 = d_0 \rightarrow f(x) = h(x) \rightarrow \square$
 
+\begin{flalign*}
+    P(\mu|\overrightarrow{x}) \propto \pi(\mu)P(\overrightarrow{x}|\mu) &\propto \frac{1}{\sqrt{2\pi}b}\exp(-\frac{{(\mu - a)}^2}{2b^2}) \cdot \prod_{i = 1}^{n}\frac{1}{\sqrt{2\pi}}\exp(-\frac{{(x_i - \mu)}^2}{2}) &\\
+    &\propto \exp(-\frac{{(\mu - a)}^2}{2b^2} - \frac{\sum_{i = 1}^{n}{(x_i - \mu)}^2}{2}) &\\
+    &\propto \exp(-\frac{1}{2}(\frac{\mu^2 - 2\mu a + a^2}{b^2} - \sum_{i=1}^{n}x_i^2 - 2n\mu \bar{x} + n\mu^2)) &\\
+    &\propto \exp(-\frac{1}{2}(\mu^2(\frac{1}{b^2} + n) - 2\mu(\frac{a}{b^2} + n\bar{x}))) &\\
+    &\propto \exp(-\frac{{(\mu - \frac{\frac{a}{b^2} + n \bar{x}}{\frac{1}{b^2} + n})}^2}{2\cdot\frac{1}{\frac{1}{b^2}+n}})
+\end{flalign*}
 
-\[P(\mu|\overrightarrow{x}) \propto \pi(\mu)P(\overrightarrow{x}|\mu) \propto \frac{1}{\sqrt{2\pi}b}\exp(-\frac{{(\mu - a)}^2}{2b^2}) \cdot \prod_{i = 1}^{n}\frac{1}{\sqrt{2\pi}}\exp(-\frac{{(x_i - \mu)}^2}{2})\]
-\[\propto \exp(-\frac{{(\mu - a)}^2}{2b^2} - \frac{\sum_{i = 1}^{n}{(x_i - \mu)}^2}{2})\]
-\[\propto \exp(-\frac{1}{2}(\frac{\mu^2 - 2\mu a + a^2}{b^2} - \sum_{i=1}^{n}x_i^2 - 2n\mu \bar{x} + n\mu^2))\]
-\[\propto \exp(-\frac{1}{2}(\mu^2(\frac{1}{b^2} + n) - 2\mu(\frac{a}{b^2} + n\bar{x})))\]
-\begin{equation}
-\propto \exp(-\frac{{(\mu - \frac{\frac{a}{b^2} + n \bar{x}}{\frac{1}{b^2} + n})}^2}{2\cdot\frac{1}{\frac{1}{b^2}+n}})
-\end{equation}
 
 We surprisingly found that
 \begin{equation}
 \mu|\overrightarrow{x} \sim N(\frac{\frac{a}{b^2} + n \bar{x}}{\frac{1}{b^2} + n}, \frac{1}{\frac{1}{b^2}+n})
 \end{equation}
 
-Then, the posterior mean $E(\mu|\overrightarrow{x})$:
-\[= \frac{\frac{a}{b^2} + n \bar{x}}{\frac{1}{b^2} + n} = \frac{\frac{a}{n\cdot b^2} +\bar{x}}{\frac{1}{n\cdot b^2} + 1} \stackrel{n \rightarrow +\infty}{\longrightarrow}\bar{x}\]
+Then, the posterior mean $E(\mu|\overrightarrow{x})$
+\begin{flalign*}
+    &= \frac{\frac{a}{b^2} + n \bar{x}}{\frac{1}{b^2} + n} = \frac{\frac{a}{n\cdot b^2} +\bar{x}}{\frac{1}{n\cdot b^2} + 1} \stackrel{n \rightarrow +\infty}{\longrightarrow}\bar{x} &
+\end{flalign*}
 
-the posterior variance $Var(\mu|\overrightarrow{x})$:
-\[= \frac{1}{\frac{1}{b^2}+n} \lessapprox \frac{1}{n} = Var(\bar{x}) = \frac{Var(x_i)}{n} = \frac{1}{n}\]
-
+the posterior variance $Var(\mu|\overrightarrow{x})$
+\begin{flalign*}
+    &= \frac{1}{\frac{1}{b^2}+n} \lessapprox \frac{1}{n} = Var(\bar{x}) = \frac{Var(x_i)}{n} = \frac{1}{n} &
+\end{flalign*}
 \indent
 
 In general, direct maximization of $P(\mu|\overrightarrow{x})$ is difficult, so we approximate 
@@ -223,18 +227,22 @@ What we are finding now is $P(x | \mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p)$, whe
 \indent
 
 Obviously:
+\begin{flalign*}
+    P(x | \mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p) &= p \cdot P(x| p = 1) + (1-p) \cdot P(x|p=0) &\\
+    &=p \cdot \frac{1}{\sqrt{2\pi}\sigma_1}\exp(-\frac{{(x - \mu_1)}^2}{2\sigma_1^2}) &\\
+    &+ (1-p) \cdot \frac{1}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x - \mu_2)}^2}{2\sigma_2^2}) &\\
+\end{flalign*}
 
-\[P(x | \mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p) = p \cdot P(x| p = 1) + (1-p) \cdot P(x|p=0)\]
-\[=p \cdot \frac{1}{\sqrt{2\pi}\sigma_1}\exp(-\frac{{(x - \mu_1)}^2}{2\sigma_1^2}) + (1-p) \cdot \frac{1}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x - \mu_2)}^2}{2\sigma_2^2})\]
+\break{}
 
 Consider $l(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p | \overrightarrow{x})$ (We don't do $L(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p | \overrightarrow{x})$ as it is too difficult to do.): 
-
-\[\sum_{i = 1}^{n} \ln(p \cdot \frac{1}{\sqrt{2\pi}\sigma_1}\exp(-\frac{{(x - \mu_1)}^2}{2\sigma_1^2}) + (1-p) \cdot \frac{1}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x - \mu_2)}^2}{2\sigma_2^2}))\]
-
+\begin{flalign*}
+    &\sum_{i = 1}^{n} \ln(p \cdot \frac{1}{\sqrt{2\pi}\sigma_1}\exp(-\frac{{(x - \mu_1)}^2}{2\sigma_1^2}) + (1-p) \cdot \frac{1}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x - \mu_2)}^2}{2\sigma_2^2})) &
+\end{flalign*}
 Then we find:
-
-\[\frac{dl}{d \mu_1} \vert_{\hat{\mu}} = 0, \frac{dl}{d \mu_2} \vert_{\hat{\mu}} = 0, \frac{dl}{d \sigma_1^2} \vert_{\hat{\mu}} = 0, \frac{dl}{d \sigma_2^2} \vert_{\hat{\mu}} = 0, \frac{dl}{dp} \vert_{\hat{\mu}} = 0\]
-
+\begin{flalign*}
+    &\frac{dl}{d \mu_1} \vert_{\hat{\mu}} = 0, \frac{dl}{d \mu_2} \vert_{\hat{\mu}} = 0, \frac{dl}{d \sigma_1^2} \vert_{\hat{\mu}} = 0, \frac{dl}{d \sigma_2^2} \vert_{\hat{\mu}} = 0, \frac{dl}{dp} \vert_{\hat{\mu}} = 0&
+\end{flalign*}
 \textit{Don't do this, as you can see how complex it would be when you actually do the differentiation.}
 
 \indent
@@ -251,21 +259,20 @@ z_i = 0&(male)
 \]
 
 Then, $P(x_i, z_i | \mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p) =$
-
-\[{(\frac{p}{\sqrt{2\pi}\sigma_1} \exp(-\frac{{(x_i - \mu_1)}^2}{2\sigma_1^2}))}^{z_i} \cdot {(\frac{1-p}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x_i - \mu_2)}^2}{2\sigma_2^2}))}^{1 - z_i}\]
-
+\begin{flalign*}
+    & {(\frac{p}{\sqrt{2\pi}\sigma_1} \exp(-\frac{{(x_i - \mu_1)}^2}{2\sigma_1^2}))}^{z_i} \cdot {(\frac{1-p}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x_i - \mu_2)}^2}{2\sigma_2^2}))}^{1 - z_i} &
+\end{flalign*}
 Now, we can get a proper $l(\mu_1, \mu_2, \sigma_1^2, \sigma_2^2, p | \overrightarrow{x}, \overrightarrow{z})$ By
-
-\[\ln(\prod^{n}_{i = 1}({(\frac{p}{\sqrt{2\pi}\sigma_1} \exp(-\frac{{(x_i - \mu_1)}^2}{2\sigma_1^2}))}^{z_i} \cdot {(\frac{1-p}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x_i - \mu_2)}^2}{2\sigma_2^2}))}^{1 - z_i}))\]
-\[= \sum_{i = 1}^{n}( z_i\cdot(\ln(p) - \frac{1}{2}\ln(2\pi\sigma_1^2) - \frac{{(x_i - \mu_1)}^2}{2\sigma_1^2}) + \]
-\[(1-z_i)\cdot(\ln(1 - p) - \frac{1}{2}\ln(2\pi\sigma_2^2) - \frac{{(x_i - \mu_2)}^2}{2\sigma_2^2}) )\]
-
+\begin{flalign*}
+    \ln(&\prod^{n}_{i = 1}({(\frac{p}{\sqrt{2\pi}\sigma_1} \exp(-\frac{{(x_i - \mu_1)}^2}{2\sigma_1^2}))}^{z_i} \cdot {(\frac{1-p}{\sqrt{2\pi}\sigma_2}\exp(-\frac{{(x_i - \mu_2)}^2}{2\sigma_2^2}))}^{1 - z_i})) &\\
+    &= \sum_{i = 1}^{n}( z_i\cdot(\ln(p) - \frac{1}{2}\ln(2\pi\sigma_1^2) - \frac{{(x_i - \mu_1)}^2}{2\sigma_1^2}) &\\
+    &+(1-z_i)\cdot(\ln(1 - p) - \frac{1}{2}\ln(2\pi\sigma_2^2) - \frac{{(x_i - \mu_2)}^2}{2\sigma_2^2}) ) 
+\end{flalign*}
 Now, we get $\hat{p}$ and $\hat{\mu}$ by:
-
-\[\frac{dl}{dp} \vert_{\hat{\mu}} = \sum_{i = 1}^{n} (\frac{z_i}{p} - \frac{1-z_i}{1-p}) = 0 \Rightarrow \hat{p} = \bar{z}\]
-
-\[\frac{dl}{d\mu_1} \vert_{\hat{\mu}} = \sum_{i=1}^{n}(\frac{z_i \cdot 2 \cdot (x_i - \hat{\mu})}{2\sigma_1^2}) = 0 \Rightarrow \hat{\mu} = \frac{\sum_{i = 1}^{n}z_i \cdot x_i}{n\cdot\bar{z}}\]
-
+\begin{flalign*}
+    \frac{dl}{dp} \vert_{\hat{\mu}} &= \sum_{i = 1}^{n} (\frac{z_i}{p} - \frac{1-z_i}{1-p}) = 0 \Rightarrow \hat{p} = \bar{z} &\\
+    \frac{dl}{d\mu_1} \vert_{\hat{\mu}} &= \sum_{i=1}^{n}(\frac{z_i \cdot 2 \cdot (x_i - \hat{\mu})}{2\sigma_1^2}) = 0 \Rightarrow \hat{\mu} = \frac{\sum_{i = 1}^{n}z_i \cdot x_i}{n\cdot\bar{z}}
+\end{flalign*}
 We can obviously see that $\hat{p}$ is the proportion of females in the samples, while $\hat{\mu}$ is the average height of female.
 
 \indent
@@ -310,7 +317,7 @@ If $g(a) \cdot g(b) < 0$, $c \in [a, b]$. We can make use of this property to le
 
 \break{}
 
-The program: Refer to \href{https://github.com/tntprizz/cuhkstat3006/tree/main/example_programs/ivt.rs}{here} for an executable file.
+The program: Refer to \href{https://github.com/tntprizz/cuhkstat3006/tree/main/example_programs/ivt.rs}{here} for an executable program.
 
 \begin{verbatim}
 fn g(x: f32) -> f32 {3.0 * x.powf(2.0) - 5.0}
@@ -357,5 +364,137 @@ If the initial $\lambda_{0.95}$ doesn't suit, try to declare $\lambda_{lower}$ o
 Now, we can get the required interval using computers efficiently.
 
 Refer to \href{https://github.com/tntprizz/cuhkstat3006/tree/main/example_programs/FindCI.rs}{here} for an example program.
+
+\break{}
+
+\subsection{Functional Iteration}
+
+Let me remind you what we are trying to do here: $g(x_0) = 0$, what is $x_0$?
+
+\indent
+
+To do this, we are going to declare $f(x) = g(x) + x$ so that
+
+\[f(x_0) = g(x_0) + x_0 = 0 + x_0 = x_0\]
+
+
+What we've done here is basically turning zero point of $g(x)$ to a fixed point of $f(x)$.
+
+In order to increase the accuracy, we are going to recurse $f(x)$, as we can see:
+
+\[x^{(0)} \rightarrow x^{(1)} = f(x^{(0)}) \rightarrow x^{(2)} = f(x^{(1)}) = f(f(x^{(0)}))\]
+
+and so on until the accuracy is satisfactory.\ (maybe get $x^{(20)}$ and treat it as $x_0$)
+
+\paragraph{Preposition} \indent Suppose $f: I \rightarrow \mathbb{R}$
+\begin{itemize}
+    \item $f(x) \in I, \forall x \in I$ (Map itself to itself, so that both of them lies inside $I$)
+    \item $|f(y) - f(x)| \leq \lambda |y - x|, \forall x, y \in I$ (Lipschitz condition)
+\end{itemize}
+
+Then, if $\lambda \in [0, 1)$, we have $|f(y) - f(x)| < |y - x|$ (Meaning that the distance between $x$ and $y$ decreases.) This implies that:
+
+\begin{itemize}
+    \item $f(x)$ has a unique fixed point $x_{\infty} \in I$.
+    \item $x_n = f(x_{n - 1}) \rightarrow x_{\infty}, \forall x_0 \in I$
+    \item $|x_n - x_\infty| \leq \frac{\lambda^n}{1 - \lambda} \cdot |x_1 - x_\infty|$
+\end{itemize}
+
+Proof:
+\begin{flalign*}
+    |x_{k+1} - x_k| = |f(x_k) - f(x_{k-1})| &\leq \lambda \cdot |x_k - x_{k-1}| & \\
+    &= \lambda \cdot | f(x_{k-1}) - f(x_{k-2}) | \\
+    &\leq \lambda^2 \cdot |x_{k-1} - x_{k-2}| \\
+    &\leq \lambda^k \cdot |x_1 - x_0|
+\end{flalign*}
+\begin{flalign*}
+    |x_m - x_n| &= |x_m - x_{m-1} + x_{m-1}-x_{m-2}+x_{m-2}+ \cdots +x_{n-1} + x_n| &\\
+    & \leq \sum_{k = n}^{m - 1} |x_{k+1} - x_k| &\\
+    & \leq \sum_{k - n}^{m - 1} \lambda^k \cdot |x_1 - x_0| &\\
+    & = |x_1 - x_0|  \cdot \sum_{k = n}^{m - 1} \lambda^k &\\
+    & \leq |x_1 - x_0| \cdot \sum_{k = n}^{\infty} \lambda^k &\\
+    & = |x_1 - x_0| \cdot \frac{\lambda^n}{1 - \lambda} & \rightarrow \square
+\end{flalign*}
+
+\break{}
+
+\paragraph{Cauchy Sequence} \indent $\forall \epsilon > 0, \exists N_\epsilon$ such that $\forall m, n \geq N_\epsilon, N \in \mathbb{N}$:
+\begin{flalign*}
+    &|x_m - x_n| < \epsilon &
+\end{flalign*}
+\begin{flalign*}
+    |x_m-x_n| &< \epsilon &\\
+    |x_1 - x_0| \cdot \frac{\lambda^{N_\epsilon}}{1 - \lambda} &< \epsilon &\\
+    \lambda^{N_\epsilon} &< \frac{\epsilon(1-\lambda)}{|x_1 - x_0|} &\\
+    N_\epsilon &> \log_\lambda(\frac{\epsilon(1-\lambda)}{|x_1 - x_0|}) &
+\end{flalign*}
+
+$\implies \{x_n\} _{n = 1}^\infty$ is a Cauchy Sequence. \textit{We don't need to know what it is.}
+
+\paragraph{Lipschitz Condition} \indent When $f$ is a continuous function,
+\begin{flalign*}
+    x_\infty = \lim_{n \rightarrow \infty} x_n = \lim_{n \rightarrow \infty} f(x_{n-1}) &= \lim_{n \rightarrow \infty} f(x_n) &\\
+    &= f(\lim_{n \rightarrow \infty} x_n) &\\
+    &= f(x_\infty) &
+\end{flalign*}
+
+$\implies x_\infty$ is a fixed point of $f(x)$.
+
+\indent
+
+If there exists $y_\infty \neq x_\infty$ such that $f(y_\infty) = y_\infty$,
+\begin{flalign*}
+    |y_\infty - x\infty| &= |f(y_\infty) - f(x_\infty)| &\\
+    & \leq \lambda \cdot |y_\infty - x_\infty| &\\
+    & < |y_\infty - x_\infty| & \rightarrow \bot   
+\end{flalign*}
+
+$\implies I$ is a closed interval, $x_\infty \in I$.
+
+\paragraph{Example: find $\sqrt{a}$}
+
+\indent
+
+Solution 1: $\sqrt{a}$ is a solution to the equation $\frac{1}{2} \cdot (\frac{a}{x} - x) = 0$, so we declare
+\begin{align*}
+    g(x) &= \frac{1}{2} \cdot (\frac{a}{x} - x) & f(x) &= g(x) + x = \frac{1}{2} \cdot (\frac{a}{x} - x) + x = \frac{1}{2} \cdot (\frac{a}{x} + x) &
+\end{align*}
+
+Then, we iterate by letting the resultant $f(x)$ become the next $x$.
+
+\break{}
+
+The program: Refer to \href{https://github.com/tntprizz/cuhkstat3006/tree/main/example_programs/FIter.rs}{here} for an executable program.
+
+\begin{verbatim}
+fn g(a: f64, x: &f64) -> f64 {
+    0.5 * ((a / *x) - *x)
+}
+fn iterate(maxit: u32, a: f64, x: &mut f64, it: &mut u32)
+-> f64 {
+    if *it >= maxit {return *x;}
+    *it += 1;
+    *x = g(a, x) + *x;
+    iterate(maxit, a, x, it)
+}
+fn main() {
+    let mut x: f64 = 1.4;
+    let mut it: u32 = 0;
+
+    println!("{}", iterate(4, 2.0, &mut x, &mut it));
+}
+\end{verbatim}
+
+\indent
+
+Solution 2 \textbf{(Wrong)}: $\sqrt{a}$ is a solution to the equation $\frac{a}{x} - x$, so we declare
+\begin{align}
+    g(x) &= \frac{a}{x} - x & f(x) &= g(x) + x = \frac{a}{x} &
+\end{align}
+The modified program will refuse to run correctly. Why?
+
+
+
+
 
 \end{document}
