@@ -386,7 +386,7 @@ In order to increase the accuracy, we are going to recurse $f(x)$, as we can see
 
 and so on until the accuracy is satisfactory.\ (maybe get $x^{(20)}$ and treat it as $x_0$)
 
-\paragraph{Preposition} \indent Suppose $f: I \rightarrow \mathbb{R}$
+\hypertarget{anc: FIPrep}{\paragraph{Preposition}} \indent Suppose $f: I \rightarrow \mathbb{R}$
 \begin{itemize}
     \item $f(x) \in I, \forall x \in I$ (Map itself to itself, so that both of them lies inside $I$)
     \item $|f(y) - f(x)| \leq \lambda |y - x|, \forall x, y \in I$ (Lipschitz condition)
@@ -444,7 +444,7 @@ $\implies x_\infty$ is a fixed point of $f(x)$.
 
 If there exists $y_\infty \neq x_\infty$ such that $f(y_\infty) = y_\infty$,
 \begin{flalign*}
-    |y_\infty - x\infty| &= |f(y_\infty) - f(x_\infty)| &\\
+    |y_\infty - x_\infty| &= |f(y_\infty) - f(x_\infty)| &\\
     & \leq \lambda \cdot |y_\infty - x_\infty| &\\
     & < |y_\infty - x_\infty| & \rightarrow \bot   
 \end{flalign*}
@@ -493,7 +493,103 @@ Solution 2 \textbf{(Wrong)}: $\sqrt{a}$ is a solution to the equation $\frac{a}{
 \end{align}
 The modified program will refuse to run correctly. Why?
 
+\indent
 
+We Get
+
+\begin{flalign*}
+    |f(y) - f(x)| &= |\frac{a}{y} - \frac{a}{x}| = \frac{a}{x \cdot y} \cdot |y - x| &
+\end{flalign*}
+Now, we need to find $I = [c, d]$ such that
+
+\begin{itemize}
+    \item $f(x) \in [c, d]$, $\forall x \in [c, d] \implies \sqrt{a} \in [c, d]$
+    \item $\frac{a}{x \cdot y} \leq \lambda < 1, \exists x, y \in [c, d]$
+    \begin{flalign*}
+        &\rightarrow x \leq c, y \leq c \implies xy > c^2 \implies \frac{a}{xy} < \frac{a}{c^2} &
+    \end{flalign*}
+\end{itemize}
+Let $x, y$ be something very close to $c$:
+\begin{flalign*}
+    &\rightarrow \frac{a}{c^2} < 1 \implies c^2 > a \rightarrow c > \sqrt{a} \implies \sqrt{a} \notin [c, d] &\rightarrow \bot
+\end{flalign*}
+
+\break{}
+
+Now, when $f(x) = \frac{1}{2} \cdot (\frac{a}{x} + x)$:
+\begin{flalign*}
+    |f(y) - f(x)| &= \frac{1}{2} \cdot |(\frac{a}{y} - \frac{a}{x}) + (y - x)| &\\
+    &= \frac{1}{2} \cdot |\frac{a}{x \cdot y} \cdot (x - y) - (x - y)| &\\
+    &= \frac{1}{2} \cdot |\frac{a}{x \cdot y} - 1| \cdot |y - x| &
+\end{flalign*}
+\begin{flalign*}
+    &I: [\sqrt{\frac{2a}{3}}, \sqrt{2a}], \sqrt{a} \in I&
+\end{flalign*}
+\begin{align*}
+    &\forall x, y \in I &\implies \sqrt{\frac{2a}{3}} \leq x \leq \sqrt{2a} & &\sqrt{\frac{2a}{3}} \leq y \leq \sqrt{2a} &
+\end{align*}
+\begin{flalign*}
+    \frac{1}{2} &\leq &&\frac{a}{x \cdot y} &\leq \frac{3}{2} &\\
+    -\frac{1}{2} &\leq &&\frac{a}{x \cdot y} - 1 &\leq \frac{1}{2} &\\
+    -\frac{1}{2} \cdot \frac{1}{2} &\leq &&\frac{1}{2} \cdot (\frac{a}{x \cdot y} - 1) &\leq \frac{1}{2} \cdot \frac{1}{2} &\\
+    & &|&\frac{1}{2} \cdot (\frac{a}{x \cdot y} - 1)| \leq \frac{1}{4} < 1 && \rightarrow \square
+\end{flalign*}
+
+\break{}
+
+Now, how do we verify whether $f(x)$ satisfies the \hyperlink{anc: FIPrep}{Prepositions?}
+
+Whenever we can find a neibourhood around $x_\infty$ such that $|f'(x)|$ within the neibourhood is bounded by $0 < \lambda \leq 1$.
+
+\paragraph{Lagrange's Mean Value Theorem}
+
+\indent
+
+If $f$ is continuous on the closed interval $[a, b]$ and is differentiable on the open interval $(a, b)$, then there exists a point $\xi \in (a, b)$ such that
+\begin{flalign*}
+    f'(\xi) &= \frac{f(b) - f(a)}{b - a} &
+\end{flalign*}
+
+\textit{The slope when $x = \xi$ is the average slope between $a$ and $b$.}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.75\linewidth]{src/LMVTDemo.png}
+    \caption{What LMVT is talking about}\label{fig:LMVTDemo}
+\end{figure}
+
+\begin{flalign*}
+    f(b) - f(a) =& f'(\xi) \cdot (b - a) &\\
+    f(b) =& f(a) + f'(\xi) \cdot (b - a) &\\
+    \implies |f(y) - f(x)| \leq& \lambda \cdot |y - x| &\\
+    =& |f(x) + f'(\xi_{xy}) \cdot (y - x) - f(x) | &\\ 
+    =& | f'(\xi_{xy}) | \cdot | y - x |
+\end{flalign*}
+If we can find an interval $I = [c, d]$ such that $x_\infty \in I$ and $\sup |f'(\xi)| \leq \lambda < 1$, $\xi \in [c, d]$. (We want to find $x_\infty$)
+
+Now, we let $I = [c, d] = [x_\infty - \alpha, x_\infty + \alpha]$ so that
+\begin{align*}
+    -\alpha &\leq &&f(x) - x_\infty &\leq& \alpha \\
+    x_\infty - \alpha &\leq &&f(x) &\leq& x_\infty + \alpha \\
+\end{align*}
+However, where does the error $\alpha$ comes from??? $\forall x \in I$
+\begin{flalign*}
+    |x - x_\infty| &\leq \alpha &\\
+    |f(x) - x_\infty| =& |f(x) - f(x_\infty)| &\\
+    \stackrel{LMVT}{=} &|f'(\xi)| \cdot |x - x_\infty| &\\
+    \leq& \sup |f'(\tau)| \cdot |x - x_\infty| &(\tau \in [c, d])\\
+    \leq& \lambda \cdot |x - x_\infty| < |x - x_\alpha| \leq \alpha &
+\end{flalign*}
+
+\break{}
+
+As a result, we found that it
+\begin{itemize}
+    \item Map itself by itself.
+    \item Their distance decreased after mapping.
+\end{itemize}
+
+\subsection{Newton's Method}
 
 
 
